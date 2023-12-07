@@ -64,7 +64,7 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     // Uint32* pixels;
     int pitch;
 
-    SDL_LockTexture(texture, NULL, &BlackImage, &pitch);
+    SDL_LockTexture(texture, NULL, (void **)&BlackImage, &pitch);
     SDL_UnlockTexture(texture);
 
     LCD_1IN47_Display(BlackImage);
