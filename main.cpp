@@ -50,7 +50,19 @@ void quit()
 
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
+    // During the whole rendering process, we render into a texture
+    // Only at the end, we push the texture to the screen
+    //
+    // Set renderer pointing to screen
+    SDL_SetRenderTarget(renderer, NULL);
+    // Copy texture to renderer pointing on the screen
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    // Present renderer
+    SDL_RenderPresent(renderer);
+    // Set renderer pointinng to texture
+    SDL_SetRenderTarget(renderer, texture);
 
+    Paint_DrawRectangle(20, 5, 80, 65, RED, DOT_PIXEL_2X2, DRAW_FILL_EMPTY);
     LCD_1IN47_Display(BlackImage);
 }
 
