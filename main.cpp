@@ -2,6 +2,7 @@
 
 #include "waveshare/Config/DEV_Config.h"
 #include "waveshare/LCD/LCD_1in47.h"
+#include "waveshare/GUI/GUI_Paint.h"
 
 #define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 #define SCREEN_WIDTH 320
