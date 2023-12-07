@@ -1,8 +1,57 @@
 #include <SDL2/SDL.h>
 
+#include "waveshare/Config/DEV_Config.h"
+#include "waveshare/LCD/LCD_1in47.h"
+
 #define PIXEL_FORMAT SDL_PIXELFORMAT_RGBA8888
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 172
+
+#ifdef USE_WAVESHARE
+
+UWORD *BlackImage;
+
+void init()
+{
+    if (DEV_ModuleInit() != 0)
+    {
+        DEV_ModuleExit();
+        exit(0);
+    }
+
+    /* LCD Init */
+    printf("1.47inch LCD demo...\r\n");
+    LCD_1IN47_Init(HORIZONTAL);
+    LCD_1IN47_Clear(BLACK);
+    LCD_SetBacklight(1023);
+
+    UDOUBLE Imagesize = LCD_1IN47_HEIGHT * LCD_1IN47_WIDTH * 2;
+    printf("Imagesize = %d\r\n", Imagesize);
+    if ((BlackImage = (UWORD *)malloc(Imagesize)) == NULL)
+    {
+        printf("Failed to apply for black memory...\r\n");
+        exit(0);
+    }
+    /*1.Create a new image cache named IMAGE_RGB and fill it with white*/
+    Paint_NewImage(BlackImage, LCD_1IN47_WIDTH, LCD_1IN47_HEIGHT, 90, BLACK, 16);
+}
+
+void quit()
+{
+    free(BlackImage);
+    BlackImage = NULL;
+    DEV_ModuleExit();
+}
+
+void render(SDL_Renderer *renderer, SDL_Texture *texture)
+{
+
+    LCD_1IN47_Display(BlackImage);
+}
+
+#else
+void init() {}
+void quit() {}
 
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
@@ -19,8 +68,11 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     SDL_SetRenderTarget(renderer, texture);
 }
 
+#endif
+
 int main(int argc, char *argv[])
 {
+    init();
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -67,4 +119,6 @@ int main(int argc, char *argv[])
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
+    quit();
 }
