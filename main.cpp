@@ -61,6 +61,19 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
 
     // BlackImage = texture->pixels;
 
+    // SDL_Surface *surface;
+    // Uint32 r_mask, g_mask, b_mask, a_mask;
+    // int bbp;
+    // SDL_PixelFormatEnumToMasks(PIXEL_FORMAT, &bbp, &r_mask, &g_mask, &b_mask, &a_mask);
+    // surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, bbp, r_mask, g_mask, b_mask, a_mask);
+    // SDL_RenderReadPixels(renderer, NULL, PIXEL_FORMAT, (void *)surface->pixels, surface->pitch);
+
+    // LCD_1IN47_Display(surface->pixels);
+
+
+
+
+
     SDL_Surface *surface;
     Uint32 r_mask, g_mask, b_mask, a_mask;
     int bbp;
@@ -68,7 +81,21 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, bbp, r_mask, g_mask, b_mask, a_mask);
     SDL_RenderReadPixels(renderer, NULL, PIXEL_FORMAT, (void *)surface->pixels, surface->pitch);
 
-    LCD_1IN47_Display(surface->pixels);
+    for (int x = 0; x < SCREEN_WIDTH; x++)
+    {
+        for (int y = 0; y < SCREEN_HEIGHT; y++)
+        {
+            // int *pixel = (int *)(surface->pixels + y * SCREEN_WIDTH + x);
+            SDL_Color color;
+            SDL_GetRGBA(((Uint32 *)surface->pixels)[x + y * SCREEN_WIDTH], surface->format, &color.r, &color.g, &color.b, &color.a);
+            // printf("x %d y %d = r %d g %d b %d\n", x, y, color.r, color.g, color.b);
+            Paint_SetPixel(y, y, color.r)
+        }
+    }
+    LCD_1IN47_Display(BlackImage);
+
+
+
 
     // LCD_1IN47_Display(BlackImage);
 
@@ -102,15 +129,16 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, bbp, r_mask, g_mask, b_mask, a_mask);
     SDL_RenderReadPixels(renderer, NULL, PIXEL_FORMAT, (void *)surface->pixels, surface->pitch);
 
-    // SDL_UnlockTexture(texture);
-
-    // for(int y = 0; y < SCREEN_HEIGHT; y++)
-    // {
-    //     for(int x = 0; x < SCREEN_WIDTH; x++)
-    //     {
-    //         int *pixel = (int *)(((void *)texture)->pixels + y * SCREEN_WIDTH + x);
-    //     }
-    // }
+    for (int x = 0; x < SCREEN_WIDTH; x++)
+    {
+        for (int y = 0; y < SCREEN_HEIGHT; y++)
+        {
+            // int *pixel = (int *)(surface->pixels + y * SCREEN_WIDTH + x);
+            SDL_Color color;
+            SDL_GetRGBA(((Uint32 *)surface->pixels)[x + y * SCREEN_WIDTH], surface->format, &color.r, &color.g, &color.b, &color.a);
+            printf("x %d y %d = r %d g %d b %d\n", x, y, color.r, color.g, color.b);
+        }
+    }
 
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
@@ -160,7 +188,7 @@ int main(int argc, char *argv[])
     SDL_Texture *texture = SDL_CreateTexture(renderer, PIXEL_FORMAT, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_HEIGHT);
     SDL_SetRenderTarget(renderer, texture);
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
