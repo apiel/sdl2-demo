@@ -9,10 +9,11 @@ SDL2=`sdl2-config --cflags --libs`
 
 ifneq ($(shell uname -m),x86_64)
 WAVESHARE := -DUSE_WAVESHARE=1 -lbcm2835 -lm -DUSE_BCM2835_LIB=1
+SUDO := sudo
 endif
 
 # WAVESHARE=-DUSE_WAVESHARE=1
 
 main:
 	g++ -o demo main.cpp $(WAVESHARE_C) $(SDL2) $(WAVESHARE) -I $(DIR_Config) -I $(DIR_GUI) -I $(DIR_EPD)
-	./demo
+	$(SUDO) ./demo
