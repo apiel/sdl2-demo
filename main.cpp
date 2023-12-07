@@ -59,11 +59,15 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     // Paint_DrawPoint(2, 28, BLACK, DOT_PIXEL_4X4, DOT_FILL_RIGHTUP);
     // Paint_DrawRectangle(20, 5, 80, 65, RED, DOT_PIXEL_2X2, DRAW_FILL_EMPTY);
 
-    BlackImage = texture->pixels;    
+    // BlackImage = texture->pixels;
+
+    // Uint32* pixels;
+    int pitch;
+
+    SDL_LockTexture(sprite_sheet_texture, NULL, &BlackImage, &pitch);
+    SDL_UnlockTexture(streaming_texture);
 
     LCD_1IN47_Display(BlackImage);
-
-
 
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
@@ -85,6 +89,14 @@ void quit() {}
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
     printf("render SDL only\n");
+
+    // for(int y = 0; y < SCREEN_HEIGHT; y++)
+    // {
+    //     for(int x = 0; x < SCREEN_WIDTH; x++)
+    //     {
+    //         int *pixel = (int *)(((void *)texture)->pixels + y * SCREEN_WIDTH + x);
+    //     }
+    // }
 
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
