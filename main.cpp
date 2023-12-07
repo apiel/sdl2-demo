@@ -61,16 +61,16 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
 
     // BlackImage = texture->pixels;
 
-    // Uint32* pixels;
-    int pitch;
+    SDL_Surface *surface;
+    Uint32 r_mask, g_mask, b_mask, a_mask;
+    int bbp;
+    SDL_PixelFormatEnumToMasks(PIXEL_FORMAT, &bbp, &r_mask, &g_mask, &b_mask, &a_mask);
+    surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, bbp, r_mask, g_mask, b_mask, a_mask);
+    SDL_RenderReadPixels(renderer, NULL, PIXEL_FORMAT, (void *)surface->pixels, surface->pitch);
 
-    SDL_LockTexture(texture, NULL, (void **)&BlackImage, &pitch);
+    LCD_1IN47_Display(surface->pixels);
 
-    SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, BlackImage, pitch);
-
-    SDL_UnlockTexture(texture);
-
-    LCD_1IN47_Display(BlackImage);
+    // LCD_1IN47_Display(BlackImage);
 
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
@@ -92,6 +92,17 @@ void quit() {}
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
     printf("render SDL only\n");
+
+    // SDL_LockTexture(texture, NULL, (void **)&pixels, &pitch);
+
+    SDL_Surface *surface;
+    Uint32 r_mask, g_mask, b_mask, a_mask;
+    int bbp;
+    SDL_PixelFormatEnumToMasks(PIXEL_FORMAT, &bbp, &r_mask, &g_mask, &b_mask, &a_mask);
+    surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, bbp, r_mask, g_mask, b_mask, a_mask);
+    SDL_RenderReadPixels(renderer, NULL, PIXEL_FORMAT, (void *)surface->pixels, surface->pitch);
+
+    // SDL_UnlockTexture(texture);
 
     // for(int y = 0; y < SCREEN_HEIGHT; y++)
     // {
