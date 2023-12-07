@@ -50,6 +50,8 @@ void quit()
 
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
+    printf("render waveshare\n");
+
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
     //
@@ -64,12 +66,12 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
 
     Paint_Clear(WHITE);
 
-    	Paint_DrawPoint(2,18, BLACK, DOT_PIXEL_1X1,  DOT_FILL_RIGHTUP);
-    Paint_DrawPoint(2,20, BLACK, DOT_PIXEL_2X2,  DOT_FILL_RIGHTUP);
-    Paint_DrawPoint(2,23, BLACK, DOT_PIXEL_3X3, DOT_FILL_RIGHTUP);
-    Paint_DrawPoint(2,28, BLACK, DOT_PIXEL_4X4, DOT_FILL_RIGHTUP);
+    Paint_DrawPoint(2, 18, BLACK, DOT_PIXEL_1X1, DOT_FILL_RIGHTUP);
+    Paint_DrawPoint(2, 20, BLACK, DOT_PIXEL_2X2, DOT_FILL_RIGHTUP);
+    Paint_DrawPoint(2, 23, BLACK, DOT_PIXEL_3X3, DOT_FILL_RIGHTUP);
+    Paint_DrawPoint(2, 28, BLACK, DOT_PIXEL_4X4, DOT_FILL_RIGHTUP);
     Paint_DrawRectangle(20, 5, 80, 65, RED, DOT_PIXEL_2X2, DRAW_FILL_EMPTY);
-    
+
     LCD_1IN47_Display(BlackImage);
 }
 
@@ -79,6 +81,8 @@ void quit() {}
 
 void render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
+    printf("render SDL only\n");
+
     // During the whole rendering process, we render into a texture
     // Only at the end, we push the texture to the screen
     //
