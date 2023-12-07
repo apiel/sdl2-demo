@@ -65,6 +65,9 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
     int pitch;
 
     SDL_LockTexture(texture, NULL, (void **)&BlackImage, &pitch);
+
+    SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, BlackImage, pitch);
+
     SDL_UnlockTexture(texture);
 
     LCD_1IN47_Display(BlackImage);
