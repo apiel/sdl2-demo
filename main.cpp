@@ -14,6 +14,10 @@
 
 #ifdef USE_WAVESHARE
 
+#ifndef RGB
+#define  RGB(r,g,b)         (((r>>3)<<11)|((g>>2)<<5)|(b>>3))
+#endif
+
 UWORD *BlackImage;
 
 void init()
@@ -89,7 +93,7 @@ void render(SDL_Renderer *renderer, SDL_Texture *texture)
             SDL_Color color;
             SDL_GetRGBA(((Uint32 *)surface->pixels)[x + y * SCREEN_WIDTH], surface->format, &color.r, &color.g, &color.b, &color.a);
             // printf("x %d y %d = r %d g %d b %d\n", x, y, color.r, color.g, color.b);
-            Paint_SetPixel(y, y, color.r)
+            Paint_SetPixel(x, y, RGB(color.r, color.g, color.b));
         }
     }
     LCD_1IN47_Display(BlackImage);
